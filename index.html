@@ -1,0 +1,41 @@
+<html><body><strong>
+The Monolith has been divided into 2 separate projects with many parts for High Availability . The different parts can be updated using Continuous Delivery methods. </strong><br />
+
+This Frame reads from AWS API Gateway that runs a Lambda Function to read from a replicated mongoDB database on three different ec2 servers. The replication is in VPC using private IP addresses.
+<br />
+ClaudiaJS was used to wrap and load the old NodeJS app and load it into Lambda and API Gateway. The Lambda timeout needed to be adjusted since the app takes more than 3 seconds to run. Claudia took care of the timeout. After the Lambda was up and running the EC2 with the old app was terminated. A backup AMI image exists.<br />
+
+
+The Lambda function is in a different account, for my own convenience, Only this communicates using external IP address. The NodeJS Lambda calls the Primary MongoDB of a 3 server replica set all in the same AZ and VPC , all of the other cross service communications use internal IP addresses for speed and security, as well as to save on AWS billing.<br />
+This Iframe comes from  
+
+<a href="https://46rbmuhov3.execute-api.us-east-1.amazonaws.com/latest/userlist">https://46rbmuhov3.execute-api.us-east-1.amazonaws.com/latest/userlist</a> <br /><br />
+<br /><center>
+<iframe src="https://46rbmuhov3.execute-api.us-east-1.amazonaws.com/latest/userlist" width="400" height="200" >
+  <p>Your browser does not support iframes.</p>
+</iframe></center>
+<br /><br />
+
+For brevity I am putting the <strong> Apache php-fpm with MySql</strong> also in an IFRAME.
+
+This is placed behind a Load Balancer and Autoscaling group. It starts with 2 servers, when the CPU usage passes 60% more instances are launched. For Continuous delivery, the Load Balancer Autoscaling is  temporarily  doubled in size, the new instances will use the new AMI image. When the reduced back, the oldest instances are retired.<br />
+
+This uses Docker and Docker-Compose for the application. The app files are on local Volume /var/www . For better CD it might be wiser to keep them inside the container. Apache and php-fpm are in separate containers<br />
+
+The Php script was not changed at all when run by containerized php-fpm.<br />
+
+MySql Master and Slave replication is implimented.
+
+It is possible to use Azure Functions to run the Php code, like the nodeJS is running on Lambda.
+
+This app is found at <a href="http://octopus.geo.charm.i.ng/public/">http://octopus.geo.charm.i.ng/public/</a>
+<br /><center>
+<iframe src="http://octopus.geo.charm.i.ng/public/" width="400" height="240">
+  <p>Your browser does not support iframes.</p><br />
+</iframe></center>
+
+<a href="http://octopus.geo.charm.i.ng/public/">http://octopus.geo.charm.i.ng/public/</a>
+
+This web page is on the Volume of the Apache php-fpm dockerized server.
+
+</body></html>

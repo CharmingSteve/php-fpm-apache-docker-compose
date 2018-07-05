@@ -1,0 +1,19 @@
+apache:
+    build: apache
+    restart: always
+    volumes:
+        - /var/www:/var/www
+    ports:
+        - 80:80
+    links:
+        - php:php
+    environment:
+        - VIRTUALHOST=minty.charm.i.ng
+
+php:
+    build: php-fpm
+    restart: always
+    volumes:
+        - /var/www:/var/www
+    ports:
+        - 9000:9000

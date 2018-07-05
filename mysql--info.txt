@@ -1,0 +1,21 @@
+107
+ mysql-bin.000001 |      107 | testDB       |
+
+GRANT REPLICATION SLAVE ON *.* TO 'slaveuser'@'%' IDENTIFIED BY 'PASSWORD'
+
+CHANGE MASTER TO MASTER_HOST='172.31.34.246',MASTER_USER='slaveuser', MASTER_PASSWORD='PASSWORD', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=107;
+
+GRANT ALL PRIVILEGES ON *.* TO 'charming'@'*' IDENTIFIED BY 'password';
+
+server-id = 2
+master-host=172.31.34.246
+master-connect-retry=60
+master-user=slaveuser
+master-password=PASSWORD
+replicate-do-db=testDB
+relay-log = /var/lib/mysql/mysql-relay-bin
+relay-log-index = /var/lib/mysql/mysql-relay-bin.index
+log-error = /var/lib/mysql/mysql.err
+master-info-file = /var/lib/mysql/mysql-master.info
+relay-log-info-file = /var/lib/mysql/mysql-relay-log.info
+log-bin = /var/lib/mysql/mysql-bin
